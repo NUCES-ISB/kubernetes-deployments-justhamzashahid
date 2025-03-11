@@ -1,0 +1,35 @@
+# Replica Set Investigation
+
+## Current Configuration
+- Default replicas: 2 (as set in flask-deployment.yaml)
+- Current implementation uses Deployment without HPA (Horizontal Pod Autoscaler)
+
+## Testing Boundaries
+1. Minimum Replicas:
+   - Tested setting replicas to 0: Not recommended as it takes down the service
+   - Practical minimum: 1 replica to maintain service availability
+   
+2. Maximum Replicas:
+   - Limited by cluster resources (CPU, Memory)
+   - Tested up to 4 replicas successfully
+   - Can be increased based on:
+     - Node resources availability
+     - Application resource requirements
+     - Load balancing needs
+
+## Recommendations
+1. Minimum Replicas:
+   - Keep minimum 2 replicas for high availability
+   - Ensures service continuity during updates/restarts
+
+2. Maximum Replicas:
+   - Set based on:
+     - Expected load
+     - Resource availability
+     - Performance requirements
+   - Consider implementing HPA for dynamic scaling
+
+## Test Results
+- Successfully scaled from 1 to 4 replicas
+- Deployment maintained stability during scaling operations
+- Service remained accessible throughout scaling tests
